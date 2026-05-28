@@ -1,0 +1,24 @@
+{% extends 'webapp/base.html' %}
+
+{% block content %}
+
+<h2>Задача #{{ task.pk }}</h2>
+
+<div class="card mt-3">
+    <div class="card-body">
+        <h5 class="card-title">{{ task.description }}</h5>
+        <p><strong>Статус:</strong> {{ task.get_status_display }}</p>
+        <p><strong>Дата выполнения:</strong> {{ task.due_date|default:"—" }}</p>
+        <hr>
+        <p><strong>Подробное описание:</strong></p>
+        {% if task.details %}
+            <p style="white-space: pre-wrap;">{{ task.details }}</p>
+        {% else %}
+            <p class="text-muted">Не указано</p>
+        {% endif %}
+    </div>
+</div>
+
+<a href="{% url 'task_list' %}" class="btn btn-secondary mt-3">← Назад к списку</a>
+
+{% endblock %}
