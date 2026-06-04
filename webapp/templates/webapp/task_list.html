@@ -5,33 +5,46 @@
 <h2>Список задач</h2>
 
 {% if tasks %}
-    <table class="table table-bordered mt-3">
-        <thead class="table-dark">
-            <tr>
-                <th>Описание</th>
-                <th>Статус</th>
-                <th>Дата выполнения</th>
-                <th>Действие</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for task in tasks %}
-            <tr>
-                <td>
-                    <a href="{% url 'task_detail' task.pk %}">{{ task.description }}</a>
-                </td>
-                <td>{{ task.get_status_display }}</td>
-                <td>{{ task.due_date|default:"—" }}</td>
-                <td>
-                    <form method="post" action="{% url 'task_delete' task.pk %}">
-                        {% csrf_token %}
-                        <button type="submit" class="btn btn-danger btn-sm">Удалить</button>
-                    </form>
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+    <form method="post">
+        {% csrf_token %}
+        <table class="table table-bordered mt-3">
+            <thead class="table-dark">
+                <tr>
+                    <th>Чекбоксы</th>
+                    <th>Описание</th>
+                    <th>Статус</th>
+                    <th>Дата выполнения</th>
+                    <th>Действие</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for task in tasks %}
+                <tr>
+                    <td>
+                        <input type="checkbox" name="task_ids" value="{{ task.pk }}" class="task-checkbox">
+                    </td>
+                    <td>
+                        <a href="{% url 'task_detail' task.pk %}">{{ task.description }}</a>
+                    </td>
+                    <td>{{ task.get_status_display }}</td>
+                    <td>{{ task.due_date|default:"—" }}</td>
+                    <td>
+                        <a href="{% url 'task_update' task.id %}" class="btn btn-primary btn-sm">
+                            Изменить
+                        </a>
+                        <a href="{% url 'task_delete' task.pk %}" class="btn btn-danger btn-sm">
+                            Удалить
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <button type="submit" class="btn btn-danger">
+            🗑 Удалить выбранные
+        </button>
+    </form>
 {% else %}
     <p class="mt-3">Задач пока нет. <a href="{% url 'task_add' %}">Добавить первую задачу</a></p>
 {% endif %}
