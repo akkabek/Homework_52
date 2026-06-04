@@ -1,0 +1,30 @@
+
+    <div class="mb-3">
+        <label for="description" class="form-label">Описание</label>
+        <textarea class="form-control" id="description" name="description" rows="3" required>{{ task.description }}</textarea>
+    </div>
+
+    <div class="mb-3">
+        <label for="details" class="form-label">Подробное описание</label>
+        <textarea class="form-control" id="details" name="details" rows="5">{{ task.details }}</textarea>
+        <div class="form-text">Необязательное поле</div>
+    </div>
+
+    <div class="mb-3">
+        <label for="status" class="form-label">Статус</label>
+        <select class="form-select" id="status" name="status">
+            {% for value, label in status_choices %}
+                <option value="{{ value }}" {% if task.status == value %}selected{% endif %}>{{ label }}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label for="due_date" class="form-label">Дата выполнения</label>
+        <input type="date" class="form-control" id="due_date" name="due_date"
+               placeholder="2025-12-31" value="{{ task.due_date|date:'Y-m-d' }}">
+        <div class="form-text">Необязательное поле. Формат: YYYY-MM-DD</div>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Сохранить</button>
+    <a href="{% url 'task_list' %}" class="btn btn-secondary">Отмена</a>
